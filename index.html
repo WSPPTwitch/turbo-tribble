@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WillyBeyond – Playful Gaming Edits with a Touch of Polish</title>
+    <meta name="description" content="I turn your gaming clips into laugh‑out‑loud edits. Memes, funny cuts, weird sound effects – all with a touch of polish. 100% remote. Let's make something awesome.">
+    <link rel="canonical" href="https://willyportfolio.website/">
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="nav" id="navbar">
+        <div class="nav__container">
+            <a href="#" class="nav__logo">
+                <span class="nav__logo-icon">🖥️</span>
+                <span>WillyBeyond</span>
+            </a>
+            <ul class="nav__links" id="navLinks">
+                <li><a href="#work" class="nav__link">Work</a></li>
+                <li><a href="#clients" class="nav__link">Clients</a></li>
+                <li><a href="#about" class="nav__link">About</a></li>
+                <li><a href="#policy" class="nav__link">Policy</a></li>
+                <li><a href="#contact" class="nav__link">Contact</a></li>
+            </ul>
+            <button class="nav__hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO ==================== -->
+    <header class="hero" id="hero">
+        <div class="hero__bg"></div>
+        <div class="hero__content">
+            <p class="hero__eyebrow">🎬 Indie Editor from Poland</p>
+            <h1 class="hero__title">Playful Gaming Edits<br><span class="hero__title-accent">with a Touch of Polish</span></h1>
+            <p class="hero__subtitle">
+                Memes, funny cuts, weird sound effects – but always with an eye for
+                timing, flow, and making your content stand out.
+            </p>
+            <a href="#work" class="hero__cta">
+                See My Edits
+                <span class="hero__cta-arrow">↓</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- ==================== WORK SECTION ==================== -->
+        <section class="work" id="work">
+            <div class="work__container">
+                <div class="work__header">
+                    <h2 class="work__title">Recent Edits</h2>
+                    <div class="work__stats" id="statsContainer"></div>
+                </div>
+
+                <div class="work__filters" id="filterContainer">
+                    <button class="filter-pill active" data-filter="all">All</button>
+                    <button class="filter-pill" data-filter="short">🎞️ Shorts (&lt;1 min)</button>
+                    <button class="filter-pill" data-filter="long">🎥 Long</button>
+                </div>
+
+                <div class="work__grid" id="videoGrid"></div>
+                <p class="work__loading" id="loadingMessage">Loading videos… (if nothing appears, check your API key)</p>
+            </div>
+        </section>
+
+        <!-- ==================== CLIENTS SECTION ==================== -->
+        <section class="clients" id="clients">
+            <div class="clients__container">
+                <h2 class="clients__title">Channels I've Edited For</h2>
+                <div class="clients__grid" id="clientsGrid"></div>
+                <p class="clients__empty" id="clientsEmpty">No clients yet – add some YouTube links and they'll appear here.</p>
+            </div>
+        </section>
+
+        <!-- ==================== ABOUT ME ==================== -->
+        <section class="about" id="about">
+            <div class="about__container">
+                <h2 class="about__title">About Me</h2>
+                <div class="about__grid">
+                    <div class="about__text">
+                        <p class="about__body">
+                            I’m a small indie editor working inside my own cozy bubble.
+                            My thing is <strong>gaming videos that don’t take themselves too
+                            seriously</strong> – memes (visual and audible), funny cuts, goofy
+                            music, and sound effects that catch you off guard. But I also
+                            know when to pull back and let the gameplay speak for itself,
+                            so there’s always a balance between chaos and actual polish.
+                        </p>
+                        <p class="about__body">
+                            I live in Premiere Pro, After Effects, and Photoshop.
+                            I’m also an amateur thumbnail creator – still leveling up,
+                            but getting better every day.
+                        </p>
+                    </div>
+                    <div class="about__skills">
+                        <span class="skill-tag">Premiere Pro</span>
+                        <span class="skill-tag">After Effects</span>
+                        <span class="skill-tag">Photoshop</span>
+                        <span class="skill-tag">Gaming Edits</span>
+                        <span class="skill-tag">Memes</span>
+                        <span class="skill-tag">Thumbnails</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== WORK POLICY ==================== -->
+        <section class="policy" id="policy">
+            <div class="policy__container">
+                <h2 class="policy__title">How I Work</h2>
+                <ul class="policy__list">
+                    <li><strong>100% Remote</strong> – no office, no meetups, just the internet.</li>
+                    <li><strong>No free work</strong> (paid demos are fine).</li>
+                    <li><strong>I take my time</strong> – quality over rush, always.</li>
+                    <li><strong>Flexible pricing</strong> – discussed per project. Minimum <strong>$35 per long video</strong>. Hourly / monthly / per‑video – we’ll figure it out.</li>
+                    <li><strong>Mainly gaming videos</strong>, but I’m open to other styles if they fit my vibe. I’m always up for experimenting with new formats.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================== CONTACT ==================== -->
+        <section class="contact" id="contact">
+            <div class="contact__container">
+                <h2 class="contact__title">Let’s make something fun</h2>
+                <p class="contact__subtitle">Hit me up – I don’t bite (unless you want a funny sound effect).</p>
+
+                <!-- Response time promise -->
+                <p class="contact__response">⏱️ I usually reply within <strong>24 hours</strong></p>
+
+                <!-- CONTACT FORM (Formspree) -->
+                <form class="contact__form" id="contactForm" action="https://formspree.io/f/mjybydza" method="POST">
+                    <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
+                    <input type="email" name="email" placeholder="Your email" required aria-label="Your email">
+                    <textarea name="message" rows="4" placeholder="Tell me about your project…" required aria-label="Your message"></textarea>
+                    <button type="submit" class="contact__submit">Send Message</button>
+                </form>
+
+                <div class="contact__socials">
+                    <a href="https://www.youtube.com/@WillyBeyond" target="_blank" class="contact__social-link" aria-label="YouTube">
+                        <img src="icons/youtube.svg" alt="YouTube" width="24" height="24">
+                    </a>
+                    <a href="https://www.tiktok.com/@wilsonbynd" target="_blank" class="contact__social-link" aria-label="TikTok">
+                        <img src="icons/tiktok.svg" alt="TikTok" width="24" height="24">
+                    </a>
+                    <a href="https://x.com/WillyDoesStuffz" target="_blank" class="contact__social-link" aria-label="X (Twitter)">
+                        <img src="icons/x.svg" alt="X" width="24" height="24">
+                    </a>
+                    <a href="https://discord.com/users/willyxbeyond" target="_blank" class="contact__social-link" aria-label="Discord">
+                        <img src="icons/discord.svg" alt="Discord" width="24" height="24">
+                    </a>
+                    <a href="https://www.instagram.com/MuhammadPro_/" target="_blank" class="contact__social-link" aria-label="Instagram">
+                        <img src="icons/instagram.svg" alt="Instagram" width="24" height="24">
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer__container">
+            <p>&copy; <span id="currentYear"></span> WillyBeyond</p>
+            <a href="privacy.html" class="footer__privacy">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <!-- Sticky mobile CTA button -->
+    <a href="#contact" class="sticky-cta" id="stickyCta" aria-label="Contact me">
+        🎮
+    </a>
+
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal" aria-hidden="true">
+        <div class="modal__backdrop" id="modalBackdrop"></div>
+        <div class="modal__content">
+            <button class="modal__close" id="modalClose" aria-label="Close">✕</button>
+            <div class="modal__video-wrapper" id="modalVideoWrapper"></div>
+            <div class="modal__info">
+                <h3 class="modal__video-title" id="modalTitle"></h3>
+                <p class="modal__video-category" id="modalCategory"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
