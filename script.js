@@ -25,14 +25,7 @@ const videoUrls = [
     'https://www.youtube.com/watch?v=B9d5HPqkgQ0'
 ];
 
-// Custom badges (optional) – video ID → badge text
-const videoBadges = {
-    '': '100k+ Views',
-    '': 'Viral Short',
-    '': 'Trending'
-};
-
-// Client feedback data
+// Client feedback data (real)
 const feedbackData = [
     {
         text: "Willy is a great editor and very good with subtitles mainly. If you ask him to add something or do something specific he will do his best to do it and succeeds at that task. I use him for most of my videos and I am very happy with the results every single time. Very nice and cooperative and gets the job done as fast as he can, usually when you give him a due date his does it in time, 10/10!!",
@@ -189,22 +182,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activeFilter === 'short') filtered = allVideos.filter(v => v.category === 'short');
         else if (activeFilter === 'long') filtered = allVideos.filter(v => v.category === 'long');
 
-        videoGrid.innerHTML = filtered.map(v => {
-            const badge = videoBadges[v.id] || '';
-            return `
-                <div class="video-card reveal" data-videoid="${v.id}">
-                    ${badge ? `<span class="video-card__badge">${badge}</span>` : ''}
-                    <div class="video-card__thumbnail">
-                        <img src="${v.thumbnail}" alt="${v.title}" loading="lazy">
-                        <div class="video-card__play"></div>
-                    </div>
-                    <div class="video-card__info">
-                        <h3 class="video-card__title">${v.title}</h3>
-                        <span class="video-card__category">${v.category === 'short' ? '🎞️ Short' : '🎥 Long'}</span>
-                    </div>
+        videoGrid.innerHTML = filtered.map(v => `
+            <div class="video-card reveal" data-videoid="${v.id}">
+                <div class="video-card__thumbnail">
+                    <img src="${v.thumbnail}" alt="${v.title}" loading="lazy">
+                    <div class="video-card__play"></div>
                 </div>
-            `;
-        }).join('');
+                <div class="video-card__info">
+                    <h3 class="video-card__title">${v.title}</h3>
+                    <span class="video-card__category">${v.category === 'short' ? '🎞️ Short' : '🎥 Long'}</span>
+                </div>
+            </div>
+        `).join('');
 
         document.querySelectorAll('.video-card').forEach(card => {
             card.addEventListener('click', () => {
@@ -214,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Observe newly added cards for animation
         observeReveal();
     }
 
@@ -253,7 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
         observeReveal();
     }
 
-    // ========== SCROLL ANIMATION (IntersectionObserver) ==========
+    function renderAll() {
+        renderStats();
+        renderVideoGrid();
+        renderClients();
+        renderFeedback();
+    }
+
+    // ========== SCROLL ANIMATION ==========
     function observeReveal() {
         const reveals = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
@@ -303,7 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const value = e.target.dataset.value;
 
             if (key === 'addons') {
-                // Toggle multi-select
                 e.target.classList.toggle('selected');
                 if (e.target.classList.contains('selected')) {
                     selections.addons.push(value);
@@ -311,7 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     selections.addons = selections.addons.filter(v => v !== value);
                 }
             } else {
-                // Single select
                 group.querySelectorAll('.estimator__option').forEach(btn => btn.classList.remove('selected'));
                 e.target.classList.add('selected');
                 selections[key] = value;
@@ -327,7 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Base price calculation (simplified)
         let minPrice = 0, maxPrice = 0;
         if (format === 'short') { minPrice = 25; maxPrice = 40; }
         else if (format === 'long') { minPrice = 35; maxPrice = 100; }
@@ -359,8 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ========== INIT ==========
-    renderFeedback();
     loadAllVideos();
     renderFilters();
-    // Initial observe after video load is triggered inside render functions
 });
