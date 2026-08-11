@@ -7,7 +7,6 @@
     <meta name="description" content="I turn your gaming clips into somewhat funny videos. I add memes, do funny cuts, add sound effects – all with monitored editing ofc. 100% remote.">
     <link rel="canonical" href="https://willyportfolio.website/">
 
-    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -27,6 +26,8 @@
                 <li><a href="#clients" class="nav__link">Clients</a></li>
                 <li><a href="#about" class="nav__link">About</a></li>
                 <li><a href="#policy" class="nav__link">Policy</a></li>
+                <li><a href="#feedback" class="nav__link">Feedback</a></li>
+                <li><a href="#estimator" class="nav__link">Estimate</a></li>
                 <li><a href="#contact" class="nav__link">Contact</a></li>
             </ul>
             <button class="nav__hamburger" id="hamburger" aria-label="Menu">
@@ -94,8 +95,8 @@
                             yet cozy music, and sound effects that catch you off guard. But I also
                             know when to pull back and let the gameplay speak for itself,
                             so there’s always a balance between chaos and actual polish.
-							I am from Poland but do not worry, I can speak and transcribe English 
-							pretty fluently :p
+                            I am from Poland but do not worry, I can speak and transcribe English 
+                            pretty fluently :p
                         </p>
                         <p class="about__body">
                             I work in Premiere Pro, After Effects, and Photoshop.
@@ -122,10 +123,66 @@
                     <li><strong>100% Remote</strong> – no office, no meetups, just the internet.</li>
                     <li><strong>No free work</strong> (paid/short demos are fine).</li>
                     <li><strong>I take my time</strong> – quality over rush, always.</li>
-                    <li><strong>Flexible pricing</strong> – discussed per project. Minimum <strong>$35 per long video</strong>. Hourly / monthly / per‑video – we’ll figure it out.</li>
-					<li><strong>Payment methods</strong> – since I'm from East EU, payments might be a pain. I can take <strong>PayPal, Crypto, Giftcards or Bank Transfers</strong>.</li>
+                    <li><strong>Flexible pricing</strong> – packages <strong>starting at $35</strong> per long video. Hourly / monthly / per‑video – we’ll figure it out.</li>
+                    <li><strong>Payment methods</strong> – since I'm from East EU, payments might be a pain. I can take <strong>PayPal, Crypto, Giftcards or Bank Transfers</strong>.</li>
                     <li><strong>Mainly gaming videos</strong>, but I’m open to other styles if they fit my vibe. I’m always up for experimenting with new formats.</li>
                 </ul>
+            </div>
+        </section>
+
+        <!-- ==================== CLIENT FEEDBACK (CAROUSEL) ==================== -->
+        <section class="feedback" id="feedback">
+            <div class="feedback__container">
+                <h2 class="feedback__title">What Clients Say</h2>
+                <div class="feedback__carousel" id="feedbackCarousel">
+                    <!-- Dynamic cards inserted by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== QUOTE ESTIMATOR ==================== -->
+        <section class="estimator" id="estimator">
+            <div class="estimator__container">
+                <h2 class="estimator__title">Get a Quick Estimate</h2>
+                <p class="estimator__subtitle">Select your project details below to get an approximate price range.</p>
+
+                <div class="estimator__steps">
+                    <!-- Step 1: Format -->
+                    <div class="estimator__step">
+                        <p class="estimator__question">1. Video Format</p>
+                        <div class="estimator__options" data-estimator="format">
+                            <button class="estimator__option" data-value="long">Long‑form YouTube</button>
+                            <button class="estimator__option" data-value="short">Short‑form (TikTok/Reels/Shorts)</button>
+                            <button class="estimator__option" data-value="twitch">Twitch Highlights</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Footage Length -->
+                    <div class="estimator__step">
+                        <p class="estimator__question">2. Raw Footage Length</p>
+                        <div class="estimator__options" data-estimator="footage">
+                            <button class="estimator__option" data-value="<30">&lt; 30 minutes</button>
+                            <button class="estimator__option" data-value="30-60">30 – 60 minutes</button>
+                            <button class="estimator__option" data-value="60+">60+ minutes</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Add‑ons -->
+                    <div class="estimator__step">
+                        <p class="estimator__question">3. Add‑ons (optional)</p>
+                        <div class="estimator__options estimator__options--multi" data-estimator="addons">
+                            <button class="estimator__option" data-value="thumbnail">🎨 Thumbnail Design</button>
+                            <button class="estimator__option" data-value="motion">✨ Motion Graphics</button>
+                            <button class="estimator__option" data-value="rush">⚡ Fast Turnaround (24‑48h)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result -->
+                <div class="estimator__result" id="estimatorResult" style="display: none;">
+                    <p>Estimated range: <strong id="estimatorPrice"></strong></p>
+                    <button class="estimator__send" id="estimatorSend">📬 Send Details to Contact Form</button>
+                </div>
             </div>
         </section>
 
@@ -135,14 +192,12 @@
                 <h2 class="contact__title">Let’s make something fun</h2>
                 <p class="contact__subtitle">Hit me up – I don’t bite.. I really don't... You gotta trust me</p>
 
-                <!-- Response time promise -->
                 <p class="contact__response">⏱️ I usually reply within <strong>24-48 hours</strong></p>
 
-                <!-- CONTACT FORM (Formspree) -->
                 <form class="contact__form" id="contactForm" action="https://formspree.io/f/mjybydza" method="POST">
                     <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
                     <input type="email" name="email" placeholder="Your email" required aria-label="Your email">
-                    <textarea name="message" rows="4" placeholder="Tell me about your project…" required aria-label="Your message"></textarea>
+                    <textarea name="message" id="formMessage" rows="4" placeholder="Tell me about your project…" required aria-label="Your message"></textarea>
                     <button type="submit" class="contact__submit">Send Message</button>
                 </form>
 
@@ -175,12 +230,9 @@
         </div>
     </footer>
 
-    <!-- Sticky mobile CTA button -->
-    <a href="#contact" class="sticky-cta" id="stickyCta" aria-label="Contact me">
-        🎮
-    </a>
+    <a href="#contact" class="sticky-cta" id="stickyCta" aria-label="Contact me">🎮</a>
 
-    <!-- Video Moduhhl -->
+    <!-- Video Modal -->
     <div class="modal" id="videoModal" aria-hidden="true">
         <div class="modal__backdrop" id="modalBackdrop"></div>
         <div class="modal__content">
