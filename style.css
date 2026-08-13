@@ -160,7 +160,7 @@ ul {
     font-weight: 600;
     font-size: 1.1rem;
     transition: background var(--transition), transform var(--transition);
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;   /* Changed to Roboto as requested */
 }
 
 .hero__cta:hover {
@@ -403,7 +403,7 @@ h2 {
 .feedback__author {
     font-weight: 600;
     color: #AEF6C7;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;   /* Changed to Roboto as requested */
 }
 
 /* ========== POLICY ========== */
@@ -717,4 +717,9 @@ h2 {
     .about__grid {
         flex-direction: column;
     }
+}
+
+/* ========== SCROLL MARGIN FIX ========== */
+section[id] {
+    scroll-margin-top: 100px;   /* adjust if nav height changes */
 }

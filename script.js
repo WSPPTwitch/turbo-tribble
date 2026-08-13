@@ -33,7 +33,7 @@ const feedbackData = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Mobile nav toggle
+    // ========== MOBILE NAV TOGGLE ==========
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.querySelector('.nav__links');
     if (hamburger && navLinks) {
@@ -45,11 +45,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Current year
+    // ========== SMOOTH SAME-PAGE ANCHOR SCROLLING ==========
+    document.querySelectorAll('a[href*="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (!href) return;
+
+            // Split into path and hash
+            const [path, hash] = href.split('#');
+
+            // If it's a pure hash (same page)
+            if (!path) {
+                if (hash) {
+                    e.preventDefault();
+                    const target = document.getElementById(hash);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+                return;
+            }
+
+            // If it's a cross-page link but current page is index.html and target is also index.html
+            const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+            if ((path === currentPath || (path === 'index.html' && currentPath === ''))) {
+                e.preventDefault();
+                const target = document.getElementById(hash);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    // If target doesn't exist, navigate normally
+                    window.location.href = href;
+                }
+            }
+            // Otherwise, allow default navigation
+        });
+    });
+
+    // ========== CURRENT YEAR ==========
     const currentYearSpan = document.getElementById('currentYear');
     if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
 
-    // Work section
+    // ========== WORK SECTION ==========
     const videoGrid = document.getElementById('videoGrid');
     const clientsGrid = document.getElementById('clientsGrid');
     const statsContainer = document.getElementById('statsContainer');
@@ -216,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     }
 
-    // Feedback
+    // ========== FEEDBACK ==========
     const feedbackCarousel = document.getElementById('feedbackCarousel');
     if (feedbackCarousel) {
         feedbackCarousel.innerHTML = feedbackData.map(f => `
@@ -227,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
-    // Modal
+    // ========== MODAL ==========
     const modal = document.getElementById('videoModal');
     const modalClose = document.querySelector('.modal__close');
     const modalVideoWrapper = document.querySelector('.modal__video-wrapper');
@@ -258,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape' && modal && modal.classList.contains('active')) closeModal();
     });
 
-    // Estimator
+    // ========== ESTIMATOR ==========
     const estimatorResult = document.getElementById('estimatorResult');
     const estimatorPrice = document.getElementById('estimatorPrice');
     const estimatorSend = document.getElementById('estimatorSend');
@@ -320,19 +357,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Contact page: retrieve estimate from URL query parameter
+    // ========== CONTACT PAGE: Retrieve estimate from URL ==========
     const formMessage = document.getElementById('formMessage');
     if (formMessage) {
         const urlParams = new URLSearchParams(window.location.search);
         const estimate = urlParams.get('estimate');
         if (estimate) {
             formMessage.value = decodeURIComponent(estimate);
-            // Optionally remove the query parameter from URL
+            // Remove the query parameter from URL (optional)
             history.replaceState(null, '', 'contact.html');
         }
     }
 
-    // Init
+    // ========== INIT ==========
     renderFilters();
     loadAllVideos();
 });
