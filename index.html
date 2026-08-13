@@ -3,105 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Willy – Video Editing Portfolio</title>
-    <meta name="description" content="I turn your gaming clips into somewhat funny videos. I add memes, do funny cuts, add sound effects – all with monitored editing ofc. 100% remote.">
+    <title>Willy - Video Editor for Gaming Content</title>
+    <meta name="description" content="I turn your gaming clips into videos people actually watch. Memes, funny cuts, sound effects. 100% remote.">
     <link rel="canonical" href="https://willyportfolio.website/">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- ==================== NAVIGATION ==================== -->
-    <nav class="nav" id="navbar">
+    <!-- Navigation -->
+    <nav class="nav">
         <div class="nav__container">
-            <a href="#" class="nav__logo">
-                <span class="nav__logo-icon">🖥️</span>
-                <span>Willy</span>
-            </a>
+            <a href="index.html" class="nav__logo"><span>🖥️</span> Willy</a>
             <ul class="nav__links" id="navLinks">
-                <li><a href="#work" class="nav__link">Work</a></li>
-                <li><a href="#clients" class="nav__link">Clients</a></li>
-                <li><a href="#about" class="nav__link">About</a></li>
-                <li><a href="#policy" class="nav__link">Policy</a></li>
-                <li><a href="#feedback" class="nav__link">Feedback</a></li>
-                <li><a href="#estimator" class="nav__link">Estimate</a></li>
-                <li><a href="#contact" class="nav__link">Contact</a></li>
+                <li><a href="index.html#work">Work</a></li>
+                <li><a href="index.html#clients">Clients</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#reviews">Reviews</a></li>
+                <li><a href="policy.html">Policy</a></li>
+                <li><a href="estimator.html">Estimate</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
-            <button class="nav__hamburger" id="hamburger" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
+            <button class="nav__hamburger" id="hamburger" aria-label="Menu">☰</button>
         </div>
     </nav>
 
-    <!-- ==================== HERO ==================== -->
-    <header class="hero" id="hero">
-        <div class="hero__bg"></div>
+    <!-- Hero -->
+    <header class="hero">
         <div class="hero__content">
-            <p class="hero__eyebrow">🎬 Independent Video Editor</p>
-            <h1 class="hero__title">Video Editing<br><span class="hero__title-accent">with a Touch of Polish</span></h1>
-            <p class="hero__subtitle">
-                Memes, funny cuts, weird sound effects – but always with an eye for
-                timing, flow, and making your content stand out from others.
-            </p>
-            <a href="#work" class="hero__cta">
-                See My Edits
-                <span class="hero__cta-arrow">↓</span>
-            </a>
+            <h1>I turn gameplay into videos people actually watch.</h1>
+            <p>Memes, funny cuts, and sound effects that fit your style. No corporate fluff.</p>
+            <a href="index.html#work" class="hero__cta">See my work</a>
         </div>
     </header>
 
     <main>
-        <!-- ==================== WORK SECTION ==================== -->
+        <!-- Work Section -->
         <section class="work" id="work">
-            <div class="work__container">
-                <div class="work__header">
-                    <h2 class="work__title">Recent Edits</h2>
-                    <div class="work__stats" id="statsContainer"></div>
-                </div>
-
-                <div class="work__filters" id="filterContainer">
+            <div class="page-container">
+                <h2>Recent Edits</h2>
+                <div class="work__stats" id="statsContainer"></div>
+                <div class="work__filters">
                     <button class="filter-pill active" data-filter="all">All</button>
-                    <button class="filter-pill" data-filter="short">🎞️ Shorts (&lt;1 min)</button>
-                    <button class="filter-pill" data-filter="long">🎥 Long</button>
+                    <button class="filter-pill" data-filter="short">Shorts (<1 min)</button>
+                    <button class="filter-pill" data-filter="long">Long</button>
                 </div>
-
                 <div class="work__grid" id="videoGrid"></div>
-                <p class="work__loading" id="loadingMessage">Loading videos… (if nothing appears, check your API key)</p>
+                <p id="loadingMessage">Loading videos...</p>
             </div>
         </section>
 
-        <!-- ==================== CLIENTS SECTION ==================== -->
+        <!-- Clients Section -->
         <section class="clients" id="clients">
-            <div class="clients__container">
-                <h2 class="clients__title">Channels I've Edited For</h2>
+            <div class="page-container">
+                <h2>Channels I've Edited For</h2>
                 <div class="clients__grid" id="clientsGrid"></div>
-                <p class="clients__empty" id="clientsEmpty">No clients yet – add some YouTube links and they'll appear here.</p>
+                <p id="clientsEmpty">No clients yet.</p>
             </div>
         </section>
 
-        <!-- ==================== ABOUT ME ==================== -->
+        <!-- About Section -->
         <section class="about" id="about">
-            <div class="about__container">
-                <h2 class="about__title">About Me</h2>
+            <div class="page-container">
+                <h2>About Me</h2>
                 <div class="about__grid">
                     <div class="about__text">
-                        <p class="about__body">
-                            I’m a small video editor working inside my bubble.
-                            My thing is <strong>gaming videos that don’t take themselves too
-                            seriously</strong> – memes (visual and audible), funny cuts, goofy
-                            yet cozy music, and sound effects that catch you off guard. But I also
-                            know when to pull back and let the gameplay speak for itself,
-                            so there’s always a balance between chaos and actual polish.
-                            I am from Poland but do not worry, I can speak and transcribe English 
-                            pretty fluently :p
-                        </p>
-                        <p class="about__body">
-                            I work in Premiere Pro, After Effects, and Photoshop.
-                            I’m also an amateur thumbnail creator (but I'm still learning).
-                        </p>
+                        <p>I’m a small video editor working inside my bubble. My thing is gaming videos that don’t take themselves too seriously. I add memes, funny cuts, and sound effects that catch people off guard. But I also know when to let the gameplay speak for itself. I am from Poland but do not worry, I can speak and transcribe English pretty fluently.</p>
+                        <p>I work in Premiere Pro, After Effects, and Photoshop. I’m also an amateur thumbnail creator (but I'm still learning).</p>
                     </div>
                     <div class="about__skills">
                         <span class="skill-tag">Premiere Pro</span>
@@ -109,128 +76,30 @@
                         <span class="skill-tag">Photoshop</span>
                         <span class="skill-tag">Gaming Edits</span>
                         <span class="skill-tag">Memes</span>
-                        <span class="skill-tag">Thumbnails</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ==================== WORK POLICY ==================== -->
-        <section class="policy" id="policy">
-            <div class="policy__container">
-                <h2 class="policy__title">How I Work</h2>
-                <ul class="policy__list">
-                    <li><strong>100% Remote</strong> – no office, no meetups, just the internet.</li>
-                    <li><strong>No free work</strong> (paid/short demos are fine).</li>
-                    <li><strong>I take my time</strong> – quality over rush, always.</li>
-                    <li><strong>Flexible pricing</strong> – packages <strong>starting at $35</strong> per long video. Hourly / monthly / per‑video – we’ll figure it out.</li>
-                    <li><strong>Payment methods</strong> – since I'm from East EU, payments might be a pain. I can take <strong>PayPal, Crypto, Giftcards or Bank Transfers</strong>.</li>
-                    <li><strong>Mainly gaming videos</strong>, but I’m open to other styles if they fit my vibe. I’m always up for experimenting with new formats.</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- ==================== CLIENT FEEDBACK (CAROUSEL) ==================== -->
-        <section class="feedback" id="feedback">
-            <div class="feedback__container">
-                <h2 class="feedback__title">What Clients Say</h2>
-                <div class="feedback__carousel" id="feedbackCarousel">
-                    <!-- Dynamic cards inserted by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== QUOTE ESTIMATOR ==================== -->
-        <section class="estimator" id="estimator">
-            <div class="estimator__container">
-                <h2 class="estimator__title">Get a Quick Estimate</h2>
-                <p class="estimator__subtitle">Select your project details below to get an approximate price range.</p>
-
-                <div class="estimator__steps">
-                    <!-- Step 1: Format -->
-                    <div class="estimator__step">
-                        <p class="estimator__question">1. Video Format</p>
-                        <div class="estimator__options" data-estimator="format">
-                            <button class="estimator__option" data-value="long">Long‑form YouTube</button>
-                            <button class="estimator__option" data-value="short">Short‑form (TikTok/Reels/Shorts)</button>
-                            <button class="estimator__option" data-value="twitch">Twitch Highlights</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Footage Length -->
-                    <div class="estimator__step">
-                        <p class="estimator__question">2. Raw Footage Length</p>
-                        <div class="estimator__options" data-estimator="footage">
-                            <button class="estimator__option" data-value="<30">&lt; 30 minutes</button>
-                            <button class="estimator__option" data-value="30-60">30 – 60 minutes</button>
-                            <button class="estimator__option" data-value="60+">60+ minutes</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Add‑ons -->
-                    <div class="estimator__step">
-                        <p class="estimator__question">3. Add‑ons (optional)</p>
-                        <div class="estimator__options estimator__options--multi" data-estimator="addons">
-                            <button class="estimator__option" data-value="thumbnail">🎨 Thumbnail Design</button>
-                            <button class="estimator__option" data-value="motion">✨ Motion Graphics</button>
-                            <button class="estimator__option" data-value="rush">⚡ Fast Turnaround (24‑48h)</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Result -->
-                <div class="estimator__result" id="estimatorResult" style="display: none;">
-                    <p>Estimated range: <strong id="estimatorPrice"></strong></p>
-                    <button class="estimator__send" id="estimatorSend">📬 Send Details to Contact Form</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== CONTACT ==================== -->
-        <section class="contact" id="contact">
-            <div class="contact__container">
-                <h2 class="contact__title">Let’s make something fun</h2>
-                <p class="contact__subtitle">Hit me up – I don’t bite.. I really don't... You gotta trust me</p>
-
-                <p class="contact__response">⏱️ I usually reply within <strong>24-48 hours</strong></p>
-
-                <form class="contact__form" id="contactForm" action="https://formspree.io/f/mjybydza" method="POST">
-                    <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
-                    <input type="email" name="email" placeholder="Your email" required aria-label="Your email">
-                    <textarea name="message" id="formMessage" rows="4" placeholder="Tell me about your project…" required aria-label="Your message"></textarea>
-                    <button type="submit" class="contact__submit">Send Message</button>
-                </form>
-
-                <div class="contact__socials">
-                    <a href="https://www.youtube.com/@WillyBeyond" target="_blank" class="contact__social-link" aria-label="YouTube">
-                        <img src="icons/youtube.svg" alt="YouTube" width="24" height="24">
-                    </a>
-                    <a href="https://www.tiktok.com/@wilsonbynd" target="_blank" class="contact__social-link" aria-label="TikTok">
-                        <img src="icons/tiktok.svg" alt="TikTok" width="24" height="24">
-                    </a>
-                    <a href="https://x.com/WillyDoesStuffz" target="_blank" class="contact__social-link" aria-label="X (Twitter)">
-                        <img src="icons/x.svg" alt="X" width="24" height="24">
-                    </a>
-                    <a href="https://discord.com/users/willyxbeyond" target="_blank" class="contact__social-link" aria-label="Discord">
-                        <img src="icons/discord.svg" alt="Discord" width="24" height="24">
-                    </a>
-                    <a href="https://www.instagram.com/MuhammadPro_/" target="_blank" class="contact__social-link" aria-label="Instagram">
-                        <img src="icons/instagram.svg" alt="Instagram" width="24" height="24">
-                    </a>
-                </div>
+        <!-- Reviews Section -->
+        <section class="reviews" id="reviews">
+            <div class="page-container">
+                <h2>Client Feedback</h2>
+                <div class="feedback__carousel" id="feedbackCarousel"></div>
             </div>
         </section>
     </main>
 
-    <!-- ==================== FOOTER ==================== -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer__container">
-            <p>&copy; <span id="currentYear"></span> WillyBeyond</p>
+            <p>&copy; <span id="currentYear"></span> Willy</p>
             <a href="privacy.html" class="footer__privacy">Privacy Policy</a>
         </div>
     </footer>
 
-    <a href="#contact" class="sticky-cta" id="stickyCta" aria-label="Contact me">🎮</a>
+    <!-- Sticky CTA (mobile only) -->
+    <a href="contact.html" class="sticky-cta" id="stickyCta" aria-label="Contact">🎮</a>
 
     <!-- Video Modal -->
     <div class="modal" id="videoModal" aria-hidden="true">

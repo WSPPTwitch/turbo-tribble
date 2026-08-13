@@ -25,43 +25,42 @@ const videoUrls = [
     'https://www.youtube.com/watch?v=B9d5HPqkgQ0'
 ];
 
-// Client feedback data (real)
 const feedbackData = [
     {
         text: "Willy is a great editor and very good with subtitles mainly. If you ask him to add something or do something specific he will do his best to do it and succeeds at that task. I use him for most of my videos and I am very happy with the results every single time. Very nice and cooperative and gets the job done as fast as he can, usually when you give him a due date his does it in time, 10/10!!",
-        author: "– CasualBrock (YouTube)"
+        author: "CasualBrock (YouTube)"
     }
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // DOM refs
+    // Mobile nav toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav__links');
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('active'));
+        });
+    }
+
+    // Current year
+    const currentYearSpan = document.getElementById('currentYear');
+    if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+
+    // Work section
     const videoGrid = document.getElementById('videoGrid');
     const clientsGrid = document.getElementById('clientsGrid');
-    const clientsEmpty = document.getElementById('clientsEmpty');
     const statsContainer = document.getElementById('statsContainer');
     const loadingMessage = document.getElementById('loadingMessage');
-    const modal = document.getElementById('videoModal');
-    const modalClose = document.getElementById('modalClose');
-    const modalBackdrop = document.getElementById('modalBackdrop');
-    const modalVideoWrapper = document.getElementById('modalVideoWrapper');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalCategory = document.getElementById('modalCategory');
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-    const currentYearSpan = document.getElementById('currentYear');
-    const feedbackCarousel = document.getElementById('feedbackCarousel');
-    const estimatorResult = document.getElementById('estimatorResult');
-    const estimatorPrice = document.getElementById('estimatorPrice');
-    const estimatorSend = document.getElementById('estimatorSend');
-    const formMessage = document.getElementById('formMessage');
+    const filterContainer = document.querySelector('.work__filters');
+    const clientsEmpty = document.getElementById('clientsEmpty');
 
     let allVideos = [];
     let channelCache = {};
     let activeFilter = 'all';
 
-    if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
-
-    // ========== UTILS ==========
     function getVideoId(url) {
         const patterns = [
             /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/,
@@ -84,25 +83,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return h * 3600 + m * 60 + s;
     }
 
-    // ========== API ==========
     async function fetchVideoDetails(videoId) {
         const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${API_KEY}`;
         const res = await fetch(url);
         const data = await res.json();
         if (!data.items || data.items.length === 0) return null;
         const item = data.items[0];
-        const snippet = item.snippet;
         const durationSec = parseDuration(item.contentDetails.duration);
         const viewCount = parseInt(item.statistics.viewCount || '0');
         const isShort = videoUrls.some(u => u.includes('/shorts/') && getVideoId(u) === videoId);
         const category = (durationSec <= 60 || isShort) ? 'short' : 'long';
-
         return {
             id: videoId,
-            title: snippet.title,
-            thumbnail: snippet.thumbnails.medium.url,
-            channelId: snippet.channelId,
-            channelTitle: snippet.channelTitle,
+            title: item.snippet.title,
+            thumbnail: item.snippet.thumbnails.medium.url,
+            channelId: item.snippet.channelId,
+            channelTitle: item.snippet.channelTitle,
             durationSec,
             category,
             viewCount,
@@ -116,11 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch(url);
         const data = await res.json();
         if (!data.items || data.items.length === 0) return null;
-        const item = data.items[0];
         const channel = {
-            name: item.snippet.title,
-            logo: item.snippet.thumbnails.default.url,
-            subCount: parseInt(item.statistics.subscriberCount || '0')
+            name: data.items[0].snippet.title,
+            logo: data.items[0].snippet.thumbnails.default.url,
+            subCount: parseInt(data.items[0].statistics.subscriberCount || '0')
         };
         channelCache[channelId] = channel;
         return channel;
@@ -129,53 +124,47 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadAllVideos() {
         allVideos = [];
         channelCache = {};
-        if (!API_KEY || API_KEY === 'YOUR_YOUTUBE_API_KEY') {
-            loadingMessage.textContent = '⚠️ Please add your YouTube API key in script.js';
+        if (!videoUrls.length) {
+            if (loadingMessage) loadingMessage.textContent = 'No videos added yet.';
             return;
         }
-        if (videoUrls.length === 0) {
-            loadingMessage.textContent = 'No videos yet – add links to the videoUrls array.';
-            return;
-        }
-        loadingMessage.style.display = 'block';
+        if (loadingMessage) loadingMessage.style.display = 'block';
         const promises = videoUrls.map(url => {
             const vidId = getVideoId(url);
-            if (!vidId) return Promise.resolve(null);
-            return fetchVideoDetails(vidId);
+            return vidId ? fetchVideoDetails(vidId) : Promise.resolve(null);
         });
         const results = await Promise.all(promises);
         allVideos = results.filter(v => v !== null);
-        loadingMessage.style.display = 'none';
+        if (loadingMessage) loadingMessage.style.display = 'none';
 
         const uniqueChannelIds = [...new Set(allVideos.map(v => v.channelId))];
         await Promise.all(uniqueChannelIds.map(id => fetchChannelDetails(id)));
 
-        renderAll();
+        if (videoGrid) renderVideoGrid();
+        if (clientsGrid) renderClients();
+        if (statsContainer) renderStats();
     }
 
-    // ========== RENDER ==========
     function renderStats() {
-        if (allVideos.length === 0) return;
-        statsContainer.innerHTML = `
-            <span>🎬 ${allVideos.length} edits</span>
-            <span>👀 ${allVideos.reduce((s,v)=>s+v.viewCount,0).toLocaleString()} views</span>
-        `;
+        if (!statsContainer || allVideos.length === 0) return;
+        statsContainer.innerHTML = `<span>${allVideos.length} edits</span><span>${allVideos.reduce((s,v)=>s+v.viewCount,0).toLocaleString()} views</span>`;
     }
 
     function renderFilters() {
-        document.querySelectorAll('.filter-pill').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                activeFilter = e.target.dataset.filter;
-                renderVideoGrid();
-            });
+        if (!filterContainer) return;
+        filterContainer.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('filter-pill')) return;
+            filterContainer.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            activeFilter = e.target.dataset.filter;
+            renderVideoGrid();
         });
     }
 
     function renderVideoGrid() {
+        if (!videoGrid) return;
         if (allVideos.length === 0) {
-            videoGrid.innerHTML = '<p style="color:var(--text-muted);">No videos yet.</p>';
+            videoGrid.innerHTML = '<p>No videos found.</p>';
             return;
         }
         let filtered = allVideos;
@@ -183,14 +172,14 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (activeFilter === 'long') filtered = allVideos.filter(v => v.category === 'long');
 
         videoGrid.innerHTML = filtered.map(v => `
-            <div class="video-card reveal" data-videoid="${v.id}">
+            <div class="video-card" data-videoid="${v.id}">
                 <div class="video-card__thumbnail">
                     <img src="${v.thumbnail}" alt="${v.title}" loading="lazy">
                     <div class="video-card__play"></div>
                 </div>
                 <div class="video-card__info">
-                    <h3 class="video-card__title">${v.title}</h3>
-                    <span class="video-card__category">${v.category === 'short' ? '🎞️ Short' : '🎥 Long'}</span>
+                    <h3>${v.title}</h3>
+                    <span>${v.category === 'short' ? 'Short' : 'Long'}</span>
                 </div>
             </div>
         `).join('');
@@ -202,24 +191,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (video) openModal(video);
             });
         });
-
-        observeReveal();
     }
 
     function renderClients() {
+        if (!clientsGrid) return;
         const uniqueChannels = [...new Set(allVideos.map(v => v.channelId))];
         if (uniqueChannels.length === 0) {
-            clientsGrid.innerHTML = '';
-            clientsEmpty.style.display = 'block';
+            if (clientsEmpty) clientsEmpty.style.display = 'block';
             return;
         }
-        clientsEmpty.style.display = 'none';
+        if (clientsEmpty) clientsEmpty.style.display = 'none';
         clientsGrid.innerHTML = uniqueChannels.map(cid => {
             const ch = channelCache[cid];
             if (!ch) return '';
             return `
-                <div class="client-card reveal">
-                    <img class="client-card__logo" src="${ch.logo}" alt="${ch.name} logo" loading="lazy">
+                <div class="client-card">
+                    <img class="client-card__logo" src="${ch.logo}" alt="${ch.name}">
                     <div>
                         <div class="client-card__name">${ch.name}</div>
                         <div class="client-card__subs">${ch.subCount ? ch.subCount.toLocaleString() + ' subs' : ''}</div>
@@ -227,130 +214,125 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }).join('');
-        observeReveal();
     }
 
-    function renderFeedback() {
-        if (!feedbackCarousel) return;
+    // Feedback
+    const feedbackCarousel = document.getElementById('feedbackCarousel');
+    if (feedbackCarousel) {
         feedbackCarousel.innerHTML = feedbackData.map(f => `
-            <div class="feedback__card reveal">
+            <div class="feedback__card">
                 <p class="feedback__text">"${f.text}"</p>
                 <span class="feedback__author">${f.author}</span>
             </div>
         `).join('');
-        observeReveal();
     }
 
-    function renderAll() {
-        renderStats();
-        renderVideoGrid();
-        renderClients();
-        renderFeedback();
-    }
+    // Modal
+    const modal = document.getElementById('videoModal');
+    const modalClose = document.querySelector('.modal__close');
+    const modalVideoWrapper = document.querySelector('.modal__video-wrapper');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalCategory = document.getElementById('modalCategory');
 
-    // ========== SCROLL ANIMATION ==========
-    function observeReveal() {
-        const reveals = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        reveals.forEach(el => observer.observe(el));
-    }
-
-    // ========== MODAL ==========
     function openModal(video) {
-        modalVideoWrapper.innerHTML = `<iframe src="${video.embedUrl}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
-        modalTitle.textContent = video.title;
-        modalCategory.textContent = video.category === 'short' ? 'Short (<1 min)' : 'Long video';
+        if (!modal || !modalVideoWrapper) return;
+        modalVideoWrapper.innerHTML = `<iframe src="${video.embedUrl}" allowfullscreen></iframe>`;
+        if (modalTitle) modalTitle.textContent = video.title;
+        if (modalCategory) modalCategory.textContent = video.category === 'short' ? 'Short' : 'Long video';
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
+        if (!modal) return;
         modal.classList.remove('active');
         modalVideoWrapper.innerHTML = '';
         document.body.style.overflow = '';
     }
 
-    modalClose.addEventListener('click', closeModal);
-    modalBackdrop.addEventListener('click', closeModal);
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modal) modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+        if (e.key === 'Escape' && modal && modal.classList.contains('active')) closeModal();
     });
 
-    // ========== MOBILE NAV ==========
-    hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
-    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('active')));
+    // Estimator
+    const estimatorResult = document.getElementById('estimatorResult');
+    const estimatorPrice = document.getElementById('estimatorPrice');
+    const estimatorSend = document.getElementById('estimatorSend');
 
-    // ========== QUOTE ESTIMATOR ==========
-    const selections = { format: null, footage: null, addons: [] };
+    if (document.querySelector('.estimator__steps')) {
+        const selections = { format: null, footage: null, addons: [], payment: null };
+        document.querySelectorAll('.estimator__options').forEach(group => {
+            group.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('estimator__option')) return;
+                const key = group.dataset.estimator;
+                const value = e.target.dataset.value;
 
-    document.querySelectorAll('.estimator__options').forEach(group => {
-        group.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('estimator__option')) return;
-            const key = group.dataset.estimator;
-            const value = e.target.dataset.value;
-
-            if (key === 'addons') {
-                e.target.classList.toggle('selected');
-                if (e.target.classList.contains('selected')) {
-                    selections.addons.push(value);
+                if (key === 'addons') {
+                    e.target.classList.toggle('selected');
+                    if (e.target.classList.contains('selected')) selections.addons.push(value);
+                    else selections.addons = selections.addons.filter(v => v !== value);
                 } else {
-                    selections.addons = selections.addons.filter(v => v !== value);
+                    group.querySelectorAll('.estimator__option').forEach(btn => btn.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    selections[key] = value;
                 }
-            } else {
-                group.querySelectorAll('.estimator__option').forEach(btn => btn.classList.remove('selected'));
-                e.target.classList.add('selected');
-                selections[key] = value;
-            }
-            updateEstimate();
+                updateEstimate();
+            });
         });
-    });
 
-    function updateEstimate() {
-        const { format, footage, addons } = selections;
-        if (!format || !footage) {
-            estimatorResult.style.display = 'none';
-            return;
+        function updateEstimate() {
+            if (!selections.format || !selections.footage) {
+                if (estimatorResult) estimatorResult.style.display = 'none';
+                return;
+            }
+            let min = 0, max = 0;
+            if (selections.format === 'short') { min = 25; max = 40; }
+            else if (selections.format === 'long') { min = 35; max = 100; }
+            else if (selections.format === 'twitch') { min = 50; max = 120; }
+
+            if (selections.footage === '30-60') { min += 10; max += 20; }
+            else if (selections.footage === '60+') { min += 20; max += 40; }
+
+            if (selections.addons.includes('thumbnail')) { min += 10; max += 20; }
+            if (selections.addons.includes('motion')) { min += 15; max += 30; }
+            if (selections.addons.includes('rush')) { min += 20; max += 35; }
+
+            if (estimatorPrice) estimatorPrice.textContent = `$${min} - $${max}`;
+            if (estimatorResult) estimatorResult.style.display = 'block';
         }
 
-        let minPrice = 0, maxPrice = 0;
-        if (format === 'short') { minPrice = 25; maxPrice = 40; }
-        else if (format === 'long') { minPrice = 35; maxPrice = 100; }
-        else if (format === 'twitch') { minPrice = 50; maxPrice = 120; }
+        if (estimatorSend) estimatorSend.addEventListener('click', () => {
+            if (!selections.format || !selections.footage) return;
+            const formatMap = { short: 'Short-form', long: 'Long-form YouTube', twitch: 'Twitch Highlights' };
+            const footageMap = { '<30': '<30 min', '30-60': '30-60 min', '60+': '60+ min' };
+            const addonMap = { thumbnail: 'Thumbnail', motion: 'Motion Graphics', rush: 'Fast Turnaround' };
+            const paymentMap = { paypal: 'PayPal', bank: 'Bank Transfer (EU)', crypto: 'Crypto', giftcards: 'Giftcards' };
 
-        if (footage === '<30') { /* no change */ }
-        else if (footage === '30-60') { minPrice += 10; maxPrice += 20; }
-        else if (footage === '60+') { minPrice += 20; maxPrice += 40; }
+            const summary = `Project Estimate:\nFormat: ${formatMap[selections.format]}\nFootage: ${footageMap[selections.footage]}\nAdd-ons: ${selections.addons.length ? selections.addons.map(a => addonMap[a]).join(', ') : 'None'}\nPayment Method: ${selections.payment ? paymentMap[selections.payment] : 'Not specified'}\nRange: ${estimatorPrice.textContent}`;
 
-        if (addons.includes('thumbnail')) { minPrice += 10; maxPrice += 20; }
-        if (addons.includes('motion')) { minPrice += 15; maxPrice += 30; }
-        if (addons.includes('rush')) { minPrice += 20; maxPrice += 35; }
-
-        estimatorPrice.textContent = `$${minPrice} – $${maxPrice}`;
-        estimatorResult.style.display = 'block';
+            // Redirect to contact page with estimate as query parameter
+            const encodedSummary = encodeURIComponent(summary);
+            window.location.href = `contact.html?estimate=${encodedSummary}`;
+        });
     }
 
-    estimatorSend.addEventListener('click', () => {
-        const { format, footage, addons } = selections;
-        if (!format || !footage) return;
-        const formatMap = { short: 'Short-form', long: 'Long-form YouTube', twitch: 'Twitch Highlights' };
-        const footageMap = { '<30': '<30 min', '30-60': '30-60 min', '60+': '60+ min' };
-        const addonMap = { thumbnail: 'Thumbnail Design', motion: 'Motion Graphics', rush: 'Fast Turnaround' };
+    // Contact page: retrieve estimate from URL query parameter
+    const formMessage = document.getElementById('formMessage');
+    if (formMessage) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const estimate = urlParams.get('estimate');
+        if (estimate) {
+            formMessage.value = decodeURIComponent(estimate);
+            // Optionally remove the query parameter from URL
+            history.replaceState(null, '', 'contact.html');
+        }
+    }
 
-        const summary = `Project Estimate:\n- Format: ${formatMap[format]}\n- Footage: ${footageMap[footage]}\n- Add-ons: ${addons.length ? addons.map(a => addonMap[a]).join(', ') : 'None'}\n- Estimated Range: ${estimatorPrice.textContent}`;
-
-        formMessage.value = summary;
-        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-    });
-
-    // ========== INIT ==========
-    loadAllVideos();
+    // Init
     renderFilters();
+    loadAllVideos();
 });

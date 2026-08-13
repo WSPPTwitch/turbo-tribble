@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get an Estimate - Willy</title>
+    <meta name="description" content="Quick price estimate for your video project.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__container">
+            <a href="index.html" class="nav__logo"><span>🖥️</span> Willy</a>
+            <ul class="nav__links" id="navLinks">
+                <li><a href="index.html#work">Work</a></li>
+                <li><a href="index.html#clients">Clients</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#reviews">Reviews</a></li>
+                <li><a href="policy.html">Policy</a></li>
+                <li><a href="estimator.html">Estimate</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="nav__hamburger" id="hamburger" aria-label="Menu">☰</button>
+        </div>
+    </nav>
+
+    <main class="page-container">
+        <h2>Get a Quick Estimate</h2>
+        <div class="estimator__steps">
+            <div class="estimator__step">
+                <p>1. Video Format</p>
+                <div class="estimator__options" data-estimator="format">
+                    <button class="estimator__option" data-value="long">Long-form YouTube</button>
+                    <button class="estimator__option" data-value="short">Short-form</button>
+                    <button class="estimator__option" data-value="twitch">Twitch Highlights</button>
+                </div>
+            </div>
+            <div class="estimator__step">
+                <p>2. Raw Footage Length</p>
+                <div class="estimator__options" data-estimator="footage">
+                    <button class="estimator__option" data-value="<30">< 30 min</button>
+                    <button class="estimator__option" data-value="30-60">30-60 min</button>
+                    <button class="estimator__option" data-value="60+">60+ min</button>
+                </div>
+            </div>
+            <div class="estimator__step">
+                <p>3. Add-ons</p>
+                <div class="estimator__options" data-estimator="addons">
+                    <button class="estimator__option" data-value="thumbnail">Thumbnail</button>
+                    <button class="estimator__option" data-value="motion">Motion Graphics</button>
+                    <button class="estimator__option" data-value="rush">Fast Turnaround</button>
+                </div>
+            </div>
+            <div class="estimator__step">
+                <p>4. Payment Method</p>
+                <div class="estimator__options" data-estimator="payment">
+                    <button class="estimator__option" data-value="paypal">PayPal</button>
+                    <button class="estimator__option" data-value="bank">Bank Transfer (EU)</button>
+                    <button class="estimator__option" data-value="crypto">Crypto</button>
+                    <button class="estimator__option" data-value="giftcards">Giftcards</button>
+                </div>
+            </div>
+        </div>
+        <div class="estimator__result" id="estimatorResult" style="display:none;">
+            <p>Estimated range: <strong id="estimatorPrice"></strong></p>
+            <button class="estimator__send" id="estimatorSend">Send to Contact Form</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

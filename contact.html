@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Willy</title>
+    <meta name="description" content="Get in touch with Willy for video editing.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__container">
+            <a href="index.html" class="nav__logo"><span>🖥️</span> Willy</a>
+            <ul class="nav__links" id="navLinks">
+                <li><a href="index.html#work">Work</a></li>
+                <li><a href="index.html#clients">Clients</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#reviews">Reviews</a></li>
+                <li><a href="policy.html">Policy</a></li>
+                <li><a href="estimator.html">Estimate</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="nav__hamburger" id="hamburger" aria-label="Menu">☰</button>
+        </div>
+    </nav>
+
+    <main class="page-container">
+        <h2>Let's talk</h2>
+        <p>I usually reply within 24-48 hours.</p>
+        <form class="contact__form" action="https://formspree.io/f/mjybydza" method="POST">
+            <input type="text" name="name" placeholder="Your name" required>
+            <input type="email" name="email" placeholder="Your email" required>
+            <textarea name="message" id="formMessage" rows="4" placeholder="Tell me about your project" required></textarea>
+            <button type="submit" class="contact__submit">Send</button>
+        </form>
+        <div class="contact__socials">
+            <a href="https://www.youtube.com/@WillyBeyond" target="_blank"><img src="icons/youtube.svg" alt="YouTube"></a>
+            <a href="https://www.tiktok.com/@wilsonbynd" target="_blank"><img src="icons/tiktok.svg" alt="TikTok"></a>
+            <a href="https://x.com/WillyDoesStuffz" target="_blank"><img src="icons/x.svg" alt="X"></a>
+            <a href="https://discord.com/users/willyxbeyond" target="_blank"><img src="icons/discord.svg" alt="Discord"></a>
+            <a href="https://www.instagram.com/MuhammadPro_" target="_blank"><img src="icons/instagram.svg" alt="Instagram"></a>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
