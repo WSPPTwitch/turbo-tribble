@@ -22,7 +22,8 @@ const videoUrls = [
     'https://www.youtube.com/watch?v=29CGFkBWcIQ',
     'https://www.youtube.com/watch?v=Gstwel6Aq0Q',
     'https://www.youtube.com/watch?v=p1qSG9vNkl8',
-    'https://www.youtube.com/watch?v=B9d5HPqkgQ0'
+    'https://www.youtube.com/watch?v=B9d5HPqkgQ0',
+    'https://www.youtube.com/watch?v=WfyaKa0Vumo'
 ];
 
 const feedbackData = [
