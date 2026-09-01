@@ -23,7 +23,19 @@ const videoUrls = [
     'https://www.youtube.com/watch?v=Gstwel6Aq0Q',
     'https://www.youtube.com/watch?v=p1qSG9vNkl8',
     'https://www.youtube.com/watch?v=B9d5HPqkgQ0',
-    'https://www.youtube.com/watch?v=WfyaKa0Vumo'
+    'https://www.youtube.com/watch?v=WfyaKa0Vumo',
+    'https://www.youtube.com/watch?v=EXKxxYau2BY'
+];
+
+const favoriteIds = [
+    'WfyaKa0Vumo',
+    'z8zjfcbJf44'
+];
+
+const thumbnailIds = [
+    'WfyaKa0Vumo',
+    'z8zjfcbJf44',
+    'EXKxxYau2BY'
 ];
 
 const feedbackData = [
@@ -51,23 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             if (!href) return;
-
-            // Split into path and hash
             const [path, hash] = href.split('#');
-
-            // If it's a pure hash (same page)
             if (!path) {
                 if (hash) {
                     e.preventDefault();
                     const target = document.getElementById(hash);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
                 return;
             }
-
-            // If it's a cross-page link but current page is index.html and target is also index.html
             const currentPath = window.location.pathname.split('/').pop() || 'index.html';
             if ((path === currentPath || (path === 'index.html' && currentPath === ''))) {
                 e.preventDefault();
@@ -75,11 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 } else {
-                    // If target doesn't exist, navigate normally
                     window.location.href = href;
                 }
             }
-            // Otherwise, allow default navigation
         });
     });
 
@@ -94,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingMessage = document.getElementById('loadingMessage');
     const filterContainer = document.querySelector('.work__filters');
     const clientsEmpty = document.getElementById('clientsEmpty');
+    const favoritesGrid = document.getElementById('favoritesGrid');
 
     let allVideos = [];
     let channelCache = {};
@@ -140,7 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
             durationSec,
             category,
             viewCount,
-            embedUrl: `https://www.youtube.com/embed/${videoId}`
+            embedUrl: `https://www.youtube.com/embed/${videoId}`,
+            isThumbnail: thumbnailIds.includes(videoId),
+            isFavorite: favoriteIds.includes(videoId)
         };
     }
 
@@ -181,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (videoGrid) renderVideoGrid();
         if (clientsGrid) renderClients();
         if (statsContainer) renderStats();
+        if (favoritesGrid) renderFavorites();
     }
 
     function renderStats() {
@@ -206,8 +212,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         let filtered = allVideos;
-        if (activeFilter === 'short') filtered = allVideos.filter(v => v.category === 'short');
-        else if (activeFilter === 'long') filtered = allVideos.filter(v => v.category === 'long');
+        if (activeFilter === 'short') {
+            filtered = allVideos.filter(v => v.category === 'short');
+        } else if (activeFilter === 'long') {
+            filtered = allVideos.filter(v => v.category === 'long');
+        } else if (activeFilter === 'thumbnail') {
+            filtered = allVideos.filter(v => v.isThumbnail);
+        } else if (activeFilter === 'favorites') {
+            filtered = allVideos.filter(v => v.isFavorite);
+        }
 
         videoGrid.innerHTML = filtered.map(v => `
             <div class="video-card" data-videoid="${v.id}">
@@ -216,13 +229,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="video-card__play"></div>
                 </div>
                 <div class="video-card__info">
-                    <h3>${v.title}</h3>
-                    <span>${v.category === 'short' ? 'Short' : 'Long'}</span>
+                    <h3 class="video-card__title">${v.title}</h3>
+                    <div class="video-card__tags">
+                        <span class="video-card__tag ${v.category === 'short' ? 'video-card__tag--short' : 'video-card__tag--long'}">
+                            ${v.category === 'short' ? 'Short' : 'Long'}
+                        </span>
+                        ${v.isThumbnail ? '<span class="video-card__tag video-card__tag--thumbnail">Thumbnail</span>' : ''}
+                        ${v.isFavorite ? '<span class="video-card__tag video-card__tag--favorite">Favorite</span>' : ''}
+                    </div>
                 </div>
             </div>
         `).join('');
 
         document.querySelectorAll('.video-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const vidId = card.dataset.videoid;
+                const video = allVideos.find(v => v.id === vidId);
+                if (video) openModal(video);
+            });
+        });
+    }
+
+    function renderFavorites() {
+        if (!favoritesGrid) return;
+        const favVideos = allVideos.filter(v => v.isFavorite);
+        if (favVideos.length === 0) {
+            favoritesGrid.innerHTML = '<p>No favorites yet.</p>';
+            return;
+        }
+        favoritesGrid.innerHTML = favVideos.map(v => `
+            <div class="favorite-card" data-videoid="${v.id}">
+                <div class="video-card__thumbnail">
+                    <img src="${v.thumbnail}" alt="${v.title}" loading="lazy">
+                    <div class="video-card__play"></div>
+                </div>
+                <div class="video-card__info">
+                    <h3>${v.title}</h3>
+                    <div class="video-card__tags">
+                        <span class="video-card__tag ${v.category === 'short' ? 'video-card__tag--short' : 'video-card__tag--long'}">
+                            ${v.category === 'short' ? 'Short' : 'Long'}
+                        </span>
+                        ${v.isThumbnail ? '<span class="video-card__tag video-card__tag--thumbnail">Thumbnail</span>' : ''}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('.favorite-card').forEach(card => {
             card.addEventListener('click', () => {
                 const vidId = card.dataset.videoid;
                 const video = allVideos.find(v => v.id === vidId);
@@ -352,20 +405,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const summary = `Project Estimate:\nFormat: ${formatMap[selections.format]}\nFootage: ${footageMap[selections.footage]}\nAdd-ons: ${selections.addons.length ? selections.addons.map(a => addonMap[a]).join(', ') : 'None'}\nPayment Method: ${selections.payment ? paymentMap[selections.payment] : 'Not specified'}\nRange: ${estimatorPrice.textContent}`;
 
-            // Redirect to contact page with estimate as query parameter
             const encodedSummary = encodeURIComponent(summary);
             window.location.href = `contact.html?estimate=${encodedSummary}`;
         });
     }
 
-    // ========== CONTACT PAGE: Retrieve estimate from URL ==========
+    // ========== CONTACT PAGE: Retrieve estimate ==========
     const formMessage = document.getElementById('formMessage');
     if (formMessage) {
         const urlParams = new URLSearchParams(window.location.search);
         const estimate = urlParams.get('estimate');
         if (estimate) {
             formMessage.value = decodeURIComponent(estimate);
-            // Remove the query parameter from URL (optional)
             history.replaceState(null, '', 'contact.html');
         }
     }

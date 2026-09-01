@@ -15,6 +15,7 @@
         <div class="nav__container">
             <a href="index.html" class="nav__logo"><span>🖥️</span> Willy</a>
             <ul class="nav__links" id="navLinks">
+                <li><a href="index.html#favorites">Favorites</a></li>
                 <li><a href="index.html#work">Work</a></li>
                 <li><a href="index.html#clients">Clients</a></li>
                 <li><a href="index.html#about">About</a></li>
@@ -32,12 +33,20 @@
         <div class="hero__content">
             <h1>I turn gameplay into videos people actually watch.</h1>
             <p>Memes, funny cuts, and sound effects that fit your style. No corporate fluff.</p>
-            <a href="index.html#work" class="hero__cta">See my work</a>
+            <a href="index.html#favorites" class="hero__cta">See my favorites</a>
         </div>
     </header>
 
     <main>
-        <!-- Work Section -->
+        <!-- ==================== FAVORITES SECTION ==================== -->
+        <section class="favorites" id="favorites">
+            <div class="page-container">
+                <h2>My Favorites</h2>
+                <div class="favorites__grid" id="favoritesGrid"></div>
+            </div>
+        </section>
+
+        <!-- ==================== WORK SECTION ==================== -->
         <section class="work" id="work">
             <div class="page-container">
                 <h2>Recent Edits</h2>
@@ -46,13 +55,15 @@
                     <button class="filter-pill active" data-filter="all">All</button>
                     <button class="filter-pill" data-filter="short">Shorts (<1 min)</button>
                     <button class="filter-pill" data-filter="long">Long</button>
+                    <button class="filter-pill" data-filter="thumbnail">Thumbnails</button>
+                    <button class="filter-pill" data-filter="favorites">Favorites</button>
                 </div>
                 <div class="work__grid" id="videoGrid"></div>
                 <p id="loadingMessage">Loading videos...</p>
             </div>
         </section>
 
-        <!-- Clients Section -->
+        <!-- ==================== CLIENTS SECTION ==================== -->
         <section class="clients" id="clients">
             <div class="page-container">
                 <h2>Channels I've Edited For</h2>
@@ -61,7 +72,7 @@
             </div>
         </section>
 
-        <!-- About Section -->
+        <!-- ==================== ABOUT SECTION ==================== -->
         <section class="about" id="about">
             <div class="page-container">
                 <h2>About Me</h2>
@@ -81,7 +92,7 @@
             </div>
         </section>
 
-        <!-- Reviews Section -->
+        <!-- ==================== REVIEWS SECTION ==================== -->
         <section class="reviews" id="reviews">
             <div class="page-container">
                 <h2>Client Feedback</h2>

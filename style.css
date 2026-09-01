@@ -160,7 +160,7 @@ ul {
     font-weight: 600;
     font-size: 1.1rem;
     transition: background var(--transition), transform var(--transition);
-    font-family: 'Roboto', sans-serif;   /* Changed to Roboto as requested */
+    font-family: 'Roboto', sans-serif;
 }
 
 .hero__cta:hover {
@@ -179,6 +179,66 @@ h2 {
     font-size: 2.5rem;
     margin-bottom: 2rem;
     letter-spacing: 1px;
+}
+
+/* ========== FAVORITES ========== */
+.favorites {
+    background: #1a211c; /* darker to stand out */
+    padding: 3rem 0;
+    position: relative; /* required for pseudo-elements */
+}
+
+/* Fade from hero into favorites */
+.favorites::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to bottom, #212922 0%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Fade from favorites back to body background for work section */
+.favorites::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to top, #212922 0%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Keep content above the fade overlays */
+.favorites .page-container {
+    position: relative;
+    z-index: 2;
+}
+
+.favorites__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.favorite-card {
+    background: #294936;
+    border: 2px solid #AEF6C7;
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.favorite-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(174, 246, 199, 0.2);
 }
 
 /* ========== WORK ========== */
@@ -286,16 +346,49 @@ h2 {
 }
 
 .video-card__title {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Grobold', sans-serif;
     font-weight: 600;
     color: #FFFFFF;
     margin-bottom: 0.4rem;
 }
 
-.video-card__category {
-    font-size: 0.9rem;
+/* ========== VIDEO TAGS ========== */
+.video-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.video-card__tag {
+    background: #3E6259;
+    color: #FFFFFF;
+    padding: 0.3rem 0.9rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.video-card__tag--short {
+    background: #5B8266;
+    color: #212922;
+}
+
+.video-card__tag--long {
+    background: #294936;
     color: #AEF6C7;
-    font-family: 'Roboto', sans-serif;
+}
+
+.video-card__tag--thumbnail {
+    background: #AEF6C7;
+    color: #212922;
+    font-weight: 600;
+}
+
+.video-card__tag--favorite {
+    background: #f72585;
+    color: #fff;
 }
 
 /* ========== CLIENTS ========== */
@@ -403,7 +496,7 @@ h2 {
 .feedback__author {
     font-weight: 600;
     color: #AEF6C7;
-    font-family: 'Roboto', sans-serif;   /* Changed to Roboto as requested */
+    font-family: 'Roboto', sans-serif;
 }
 
 /* ========== POLICY ========== */
@@ -692,6 +785,11 @@ h2 {
     }
 }
 
+/* ========== SCROLL MARGIN ========== */
+section[id] {
+    scroll-margin-top: 100px;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
     .nav__links {
@@ -717,9 +815,4 @@ h2 {
     .about__grid {
         flex-direction: column;
     }
-}
-
-/* ========== SCROLL MARGIN FIX ========== */
-section[id] {
-    scroll-margin-top: 100px;   /* adjust if nav height changes */
 }
