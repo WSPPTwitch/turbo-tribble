@@ -15,6 +15,7 @@
         <div class="nav__container">
             <a href="index.html" class="nav__logo"><span>🖥️</span> Willy</a>
             <ul class="nav__links" id="navLinks">
+                <li><a href="index.html#demo">Demo</a></li>
                 <li><a href="index.html#favorites">Favorites</a></li>
                 <li><a href="index.html#work">Work</a></li>
                 <li><a href="index.html#clients">Clients</a></li>
@@ -28,14 +29,36 @@
         </div>
     </nav>
 
-    <!-- Hero -->
+    <!-- ==================== HERO ==================== -->
     <header class="hero">
         <div class="hero__content">
             <h1>I turn gameplay into videos people actually watch.</h1>
             <p>Memes, funny cuts, and sound effects that fit your style. No corporate fluff.</p>
-            <a href="index.html#favorites" class="hero__cta">See my favorites</a>
+            <a href="index.html#demo" class="hero__cta">See my favorites</a>
         </div>
     </header>
+
+    <!-- ==================== DEMO PODIUM (moved below hero) ==================== -->
+    <section class="demo" id="demo">
+        <div class="demo__container">
+            <h2 class="demo__title">Demo Podium</h2>
+            <div class="demo__grid">
+                <!-- Video clip -->
+                <div class="demo__video">
+                    <video controls autoplay muted loop playsinline>
+                        <source src="demo/demo-clip.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p class="demo__label">Best editing highlight (downscaled due to restrictions)</p>
+                </div>
+                <!-- Thumbnail -->
+                <div class="demo__thumbnail">
+                    <img src="demo/demo-thumbnail.jpg" alt="Best thumbnail">
+                    <p class="demo__label">Best thumbnail</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <main>
         <!-- ==================== FAVORITES SECTION ==================== -->

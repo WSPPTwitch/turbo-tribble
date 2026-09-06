@@ -23,19 +23,17 @@ const videoUrls = [
     'https://www.youtube.com/watch?v=Gstwel6Aq0Q',
     'https://www.youtube.com/watch?v=p1qSG9vNkl8',
     'https://www.youtube.com/watch?v=B9d5HPqkgQ0',
-    'https://www.youtube.com/watch?v=WfyaKa0Vumo',
+    // Removed WfyaKa0Vumo (taken down)
     'https://www.youtube.com/watch?v=EXKxxYau2BY'
 ];
 
 const favoriteIds = [
-    'WfyaKa0Vumo',
-    'z8zjfcbJf44'
+    'z8zjfcbJf44'   // Removed WfyaKa0Vumo
 ];
 
 const thumbnailIds = [
-    'WfyaKa0Vumo',
     'z8zjfcbJf44',
-    'EXKxxYau2BY'
+    'EXKxxYau2BY'   // Removed WfyaKa0Vumo
 ];
 
 const feedbackData = [
