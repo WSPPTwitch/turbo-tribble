@@ -6,14 +6,17 @@
     <title>Willy - Video Editor for Gaming Content</title>
     <meta name="description" content="I turn your gaming clips into videos people actually watch. Memes, funny cuts, sound effects. 100% remote.">
     <link rel="canonical" href="https://willyportfolio.website/">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
+    <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav__container">
-            <a href="index.html" class="nav__logo"><span>🖥️</span> Willy</a>
+            <a href="index.html" class="nav__logo">
+                <img src="favicon.png" alt="Willy logo" style="height: 1.8rem; width: auto; vertical-align: middle;">
+                <span>Willy</span>
+            </a>
             <ul class="nav__links" id="navLinks">
                 <li><a href="index.html#demo">Demo</a></li>
                 <li><a href="index.html#favorites">Favorites</a></li>
@@ -29,7 +32,7 @@
         </div>
     </nav>
 
-    <!-- ==================== HERO ==================== -->
+    <!-- Hero -->
     <header class="hero">
         <div class="hero__content">
             <h1>I turn gameplay into videos people actually watch.</h1>
@@ -38,20 +41,18 @@
         </div>
     </header>
 
-    <!-- ==================== DEMO PODIUM (moved below hero) ==================== -->
+    <!-- Demo Podium -->
     <section class="demo" id="demo">
         <div class="demo__container">
             <h2 class="demo__title">Demo Podium</h2>
             <div class="demo__grid">
-                <!-- Video clip -->
                 <div class="demo__video">
                     <video controls autoplay muted loop playsinline>
                         <source src="demo/demo-clip.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                    <p class="demo__label">Best editing highlight (downscaled due to restrictions)</p>
+                    <p class="demo__label">Best editing highlight</p>
                 </div>
-                <!-- Thumbnail -->
                 <div class="demo__thumbnail">
                     <img src="demo/demo-thumbnail.jpg" alt="Best thumbnail">
                     <p class="demo__label">Best thumbnail</p>
@@ -61,7 +62,7 @@
     </section>
 
     <main>
-        <!-- ==================== FAVORITES SECTION ==================== -->
+        <!-- Favorites Section -->
         <section class="favorites" id="favorites">
             <div class="page-container">
                 <h2>My Favorites</h2>
@@ -69,7 +70,7 @@
             </div>
         </section>
 
-        <!-- ==================== WORK SECTION ==================== -->
+        <!-- Work Section -->
         <section class="work" id="work">
             <div class="page-container">
                 <h2>Recent Edits</h2>
@@ -86,7 +87,7 @@
             </div>
         </section>
 
-        <!-- ==================== CLIENTS SECTION ==================== -->
+        <!-- Clients Section -->
         <section class="clients" id="clients">
             <div class="page-container">
                 <h2>Channels I've Edited For</h2>
@@ -95,7 +96,7 @@
             </div>
         </section>
 
-        <!-- ==================== ABOUT SECTION ==================== -->
+        <!-- About Section -->
         <section class="about" id="about">
             <div class="page-container">
                 <h2>About Me</h2>
@@ -115,7 +116,7 @@
             </div>
         </section>
 
-        <!-- ==================== REVIEWS SECTION ==================== -->
+        <!-- Reviews Section -->
         <section class="reviews" id="reviews">
             <div class="page-container">
                 <h2>Client Feedback</h2>
@@ -124,7 +125,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer__container">
             <p>&copy; <span id="currentYear"></span> Willy</p>
@@ -132,7 +132,6 @@
         </div>
     </footer>
 
-    <!-- Sticky CTA (mobile only) -->
     <a href="contact.html" class="sticky-cta" id="stickyCta" aria-label="Contact">🎮</a>
 
     <!-- Video Modal -->

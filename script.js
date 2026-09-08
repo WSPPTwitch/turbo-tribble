@@ -23,17 +23,16 @@ const videoUrls = [
     'https://www.youtube.com/watch?v=Gstwel6Aq0Q',
     'https://www.youtube.com/watch?v=p1qSG9vNkl8',
     'https://www.youtube.com/watch?v=B9d5HPqkgQ0',
-    // Removed WfyaKa0Vumo (taken down)
     'https://www.youtube.com/watch?v=EXKxxYau2BY'
 ];
 
 const favoriteIds = [
-    'z8zjfcbJf44'   // Removed WfyaKa0Vumo
+    'z8zjfcbJf44'
 ];
 
 const thumbnailIds = [
     'z8zjfcbJf44',
-    'EXKxxYau2BY'   // Removed WfyaKa0Vumo
+    'EXKxxYau2BY'
 ];
 
 const feedbackData = [
@@ -347,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape' && modal && modal.classList.contains('active')) closeModal();
     });
 
-    // ========== ESTIMATOR ==========
+    // ========== ESTIMATOR (UPDATED PRICING) ==========
     const estimatorResult = document.getElementById('estimatorResult');
     const estimatorPrice = document.getElementById('estimatorPrice');
     const estimatorSend = document.getElementById('estimatorSend');
@@ -379,16 +378,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             let min = 0, max = 0;
-            if (selections.format === 'short') { min = 25; max = 40; }
-            else if (selections.format === 'long') { min = 35; max = 100; }
-            else if (selections.format === 'twitch') { min = 50; max = 120; }
 
-            if (selections.footage === '30-60') { min += 10; max += 20; }
-            else if (selections.footage === '60+') { min += 20; max += 40; }
+            // UPDATED BASE PRICES
+            if (selections.format === 'short') { min = 20; max = 35; }
+            else if (selections.format === 'long') { min = 40; max = 90; }
+            else if (selections.format === 'twitch') { min = 40; max = 80; }
 
+            // UPDATED FOOTAGE SURCHARGES
+            if (selections.footage === '30-60') { min += 5; max += 10; }
+            else if (selections.footage === '60+') { min += 15; max += 30; }
+
+            // UPDATED ADD-ON COSTS
             if (selections.addons.includes('thumbnail')) { min += 10; max += 20; }
-            if (selections.addons.includes('motion')) { min += 15; max += 30; }
-            if (selections.addons.includes('rush')) { min += 20; max += 35; }
+            if (selections.addons.includes('motion')) { min += 10; max += 20; }
+            if (selections.addons.includes('rush')) { min += 15; max += 25; }
 
             if (estimatorPrice) estimatorPrice.textContent = `$${min} - $${max}`;
             if (estimatorResult) estimatorResult.style.display = 'block';
