@@ -55,6 +55,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ========== THEME TOGGLE ==========
+    const themeToggle = document.getElementById('themeToggle');
+    const rootEl = document.documentElement;
+
+    function syncThemeToggle() {
+        if (!themeToggle) return;
+        themeToggle.setAttribute('aria-pressed', rootEl.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+    }
+
+    // Reflect state applied by the inline <head> script (avoids a stale ARIA value on load)
+    syncThemeToggle();
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const isDark = rootEl.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                rootEl.removeAttribute('data-theme');
+                try { localStorage.setItem('theme', 'light'); } catch (e) {}
+            } else {
+                rootEl.setAttribute('data-theme', 'dark');
+                try { localStorage.setItem('theme', 'dark'); } catch (e) {}
+            }
+            syncThemeToggle();
+        });
+    }
+
     // ========== SMOOTH SAME-PAGE ANCHOR SCROLLING ==========
     document.querySelectorAll('a[href*="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {

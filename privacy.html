@@ -7,6 +7,15 @@
     <meta name="description" content="Privacy policy for WillyBeyond portfolio.">
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('theme');
+                var useDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (useDark) document.documentElement.setAttribute('data-theme', 'dark');
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body>
     <main class="page-container" style="max-width:700px;">

@@ -7,6 +7,15 @@
     <meta name="description" content="Oops! This page doesn't exist.">
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('theme');
+                var useDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (useDark) document.documentElement.setAttribute('data-theme', 'dark');
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body>
     <div class="page-container" style="text-align:center; margin-top:10vh;">
