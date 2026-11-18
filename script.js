@@ -415,20 +415,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Per-video base price
+            // Per-video base price (modest indie-editor rates, ~$30 avg)
             let min = 0, max = 0;
-            if (selections.format === 'short') { min = 20; max = 35; }
-            else if (selections.format === 'long') { min = 40; max = 90; }
-            else if (selections.format === 'twitch') { min = 40; max = 80; }
+            if (selections.format === 'short') { min = 15; max = 20; }
+            else if (selections.format === 'long') { min = 25; max = 35; }
+            else if (selections.format === 'twitch') { min = 25; max = 30; }
 
-            // Per-video footage surcharges
-            if (selections.footage === '30-60') { min += 5; max += 10; }
-            else if (selections.footage === '60+') { min += 15; max += 30; }
+            // Per-video footage surcharges (small bumps, not huge jumps)
+            if (selections.footage === '30-60') { min += 3; max += 5; }
+            else if (selections.footage === '60+') { min += 5; max += 10; }
 
-            // Per-video add-ons
-            if (selections.addons.includes('thumbnail')) { min += 10; max += 20; }
-            if (selections.addons.includes('motion')) { min += 10; max += 20; }
-            if (selections.addons.includes('rush')) { min += 15; max += 25; }
+            // Per-video add-ons (kept cheap so the base stays the headline)
+            if (selections.addons.includes('thumbnail')) { min += 5; max += 10; }
+            if (selections.addons.includes('motion')) { min += 5; max += 10; }
+            if (selections.addons.includes('rush')) { min += 10; max += 15; }
 
             // Apply progressive volume discount
             const tier = VOLUME_TIERS[selections.volume] || VOLUME_TIERS['1'];
