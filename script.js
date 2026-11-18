@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggle.setAttribute('aria-pressed', rootEl.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
     }
 
-    // Reflect state applied by the inline <head> script (avoids a stale ARIA value on load)
     syncThemeToggle();
 
     if (themeToggle) {
@@ -372,26 +371,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape' && modal && modal.classList.contains('active')) closeModal();
     });
 
-    // ========== ESTIMATOR (UPDATED PRICING) ==========
+    // ========== ESTIMATOR ==========
     const estimatorResult = document.getElementById('estimatorResult');
     const estimatorPrice = document.getElementById('estimatorPrice');
     const estimatorSend = document.getElementById('estimatorSend');
 
     if (document.querySelector('.estimator__steps')) {
-        const selections = { format: null, footage: null, addons: [], payment: null };
+        // Progressive volume tiers — multiplier represents total "video-equivalents" paid
+        const VOLUME_TIERS = {
+            '1':     { count: 1, multiplier: 1 },                                              // 1 × 100%
+            '3':     { count: 3, multiplier: 1 + 0.9 + 0.9 },                                  // v1 100%, v2-3 90%
+            '5':     { count: 5, multiplier: 1 + 0.9 + 0.9 + 0.85 + 0.85 },                    // +v4-5 85%
+            '6plus': { count: 6, multiplier: 1 + 0.9 + 0.9 + 0.85 + 0.85 + 0.8 }               // +v6 80%
+        };
+
+        const selections = { format: null, footage: null, addons: [], payment: null, volume: null };
+
         document.querySelectorAll('.estimator__options').forEach(group => {
             group.addEventListener('click', (e) => {
-                if (!e.target.classList.contains('estimator__option')) return;
+                // Use closest() so clicks on <small>/<br> inside the button still register
+                const option = e.target.closest('.estimator__option');
+                if (!option || !group.contains(option)) return;
+
                 const key = group.dataset.estimator;
-                const value = e.target.dataset.value;
+                const value = option.dataset.value;
 
                 if (key === 'addons') {
-                    e.target.classList.toggle('selected');
-                    if (e.target.classList.contains('selected')) selections.addons.push(value);
+                    option.classList.toggle('selected');
+                    if (option.classList.contains('selected')) selections.addons.push(value);
                     else selections.addons = selections.addons.filter(v => v !== value);
                 } else {
                     group.querySelectorAll('.estimator__option').forEach(btn => btn.classList.remove('selected'));
-                    e.target.classList.add('selected');
+                    option.classList.add('selected');
                     selections[key] = value;
                 }
                 updateEstimate();
@@ -399,38 +410,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         function updateEstimate() {
-            if (!selections.format || !selections.footage) {
+            if (!selections.format || !selections.footage || !selections.volume) {
                 if (estimatorResult) estimatorResult.style.display = 'none';
                 return;
             }
-            let min = 0, max = 0;
 
-            // UPDATED BASE PRICES
+            // Per-video base price
+            let min = 0, max = 0;
             if (selections.format === 'short') { min = 20; max = 35; }
             else if (selections.format === 'long') { min = 40; max = 90; }
             else if (selections.format === 'twitch') { min = 40; max = 80; }
 
-            // UPDATED FOOTAGE SURCHARGES
+            // Per-video footage surcharges
             if (selections.footage === '30-60') { min += 5; max += 10; }
             else if (selections.footage === '60+') { min += 15; max += 30; }
 
-            // UPDATED ADD-ON COSTS
+            // Per-video add-ons
             if (selections.addons.includes('thumbnail')) { min += 10; max += 20; }
             if (selections.addons.includes('motion')) { min += 10; max += 20; }
             if (selections.addons.includes('rush')) { min += 15; max += 25; }
 
-            if (estimatorPrice) estimatorPrice.textContent = `$${min} - $${max}`;
+            // Apply progressive volume discount
+            const tier = VOLUME_TIERS[selections.volume] || VOLUME_TIERS['1'];
+            const totalMin = Math.round(min * tier.multiplier);
+            const totalMax = Math.round(max * tier.multiplier);
+
+            if (estimatorPrice) {
+                estimatorPrice.textContent = tier.count === 1
+                    ? `$${totalMin} - $${totalMax}`
+                    : `$${totalMin} - $${totalMax} for ${tier.count} videos`;
+            }
             if (estimatorResult) estimatorResult.style.display = 'block';
         }
 
         if (estimatorSend) estimatorSend.addEventListener('click', () => {
-            if (!selections.format || !selections.footage) return;
+            if (!selections.format || !selections.footage || !selections.volume) return;
             const formatMap = { short: 'Short-form', long: 'Long-form YouTube', twitch: 'Twitch Highlights' };
             const footageMap = { '<30': '<30 min', '30-60': '30-60 min', '60+': '60+ min' };
             const addonMap = { thumbnail: 'Thumbnail', motion: 'Motion Graphics', rush: 'Fast Turnaround' };
+            const volumeMap = {
+                '1':     '1 Video (Standard Rate)',
+                '3':     '3-Video Pack (Videos 2–3 at 10% off)',
+                '5':     '5-Video Pack (Videos 4–5 at 15% off)',
+                '6plus': 'Ongoing Partner (Videos 6+ at 20% off)'
+            };
             const paymentMap = { paypal: 'PayPal', bank: 'Bank Transfer (EU)', crypto: 'Crypto', giftcards: 'Giftcards' };
 
-            const summary = `Project Estimate:\nFormat: ${formatMap[selections.format]}\nFootage: ${footageMap[selections.footage]}\nAdd-ons: ${selections.addons.length ? selections.addons.map(a => addonMap[a]).join(', ') : 'None'}\nPayment Method: ${selections.payment ? paymentMap[selections.payment] : 'Not specified'}\nRange: ${estimatorPrice.textContent}`;
+            const summary = `Project Estimate:\nFormat: ${formatMap[selections.format]}\nFootage: ${footageMap[selections.footage]}\nAdd-ons: ${selections.addons.length ? selections.addons.map(a => addonMap[a]).join(', ') : 'None'}\nVolume: ${volumeMap[selections.volume]}\nPayment Method: ${selections.payment ? paymentMap[selections.payment] : 'Not specified'}\nEstimated Total: ${estimatorPrice.textContent}`;
 
             const encodedSummary = encodeURIComponent(summary);
             window.location.href = `contact.html?estimate=${encodedSummary}`;

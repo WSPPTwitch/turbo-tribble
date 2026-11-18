@@ -81,9 +81,24 @@
                     <button class="estimator__option" data-value="giftcards">Giftcards</button>
                 </div>
             </div>
+            <div class="estimator__step">
+                <p>5. Project Volume &amp; Commitment</p>
+                <div class="estimator__options" data-estimator="volume">
+                    <button class="estimator__option" data-value="1">1 Video<br><small>Standard Rate — Trial / No commitment</small></button>
+                    <button class="estimator__option" data-value="3">3-Video Pack<br><small>Video 1 standard, Videos 2–3 at 10% off</small></button>
+                    <button class="estimator__option" data-value="5">5-Video Pack<br><small>Videos 1–3 tiers, Videos 4–5 at 15% off</small></button>
+                    <button class="estimator__option" data-value="6plus">Ongoing Partner<br><small>Progressive discounts up to 20% off for 6+ videos</small></button>
+                </div>
+                <ul style="list-style:disc; padding-left:1.5rem; margin-top:1rem; font-size:0.9rem; color:var(--text-muted); line-height:1.7;">
+                    <li><strong style="color:var(--text);">Video 1:</strong> 100% Standard Rate (Trial / No commitment)</li>
+                    <li><strong style="color:var(--text);">Videos 2–3:</strong> 10% off (after the 1st video)</li>
+                    <li><strong style="color:var(--text);">Videos 4–5:</strong> 15% off (after the 3rd video)</li>
+                    <li><strong style="color:var(--text);">Videos 6+:</strong> 20% off (Permanent partner rate)</li>
+                </ul>
+            </div>
         </div>
         <div class="estimator__result" id="estimatorResult" style="display:none;">
-            <p>Estimated range: <strong id="estimatorPrice"></strong></p>
+            <p>Estimated total: <strong id="estimatorPrice"></strong></p>
             <button class="estimator__send" id="estimatorSend">Send to Contact Form</button>
         </div>
     </main>
