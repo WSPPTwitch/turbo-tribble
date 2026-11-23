@@ -24,7 +24,8 @@ const videoUrls = [
     'https://www.youtube.com/watch?v=p1qSG9vNkl8',
     'https://www.youtube.com/watch?v=B9d5HPqkgQ0',
     'https://www.youtube.com/watch?v=EXKxxYau2BY',
-    'https://www.youtube.com/watch?v=t09jDpy7UOw'
+    'https://www.youtube.com/watch?v=t09jDpy7UOw',
+    'https://www.youtube.com/watch?v=fhQEOv-FpZ0'
 ];
 
 const favoriteIds = [
